@@ -1,8 +1,8 @@
 const video = document.getElementById('video');
 
 const loadVideo = (url) => {
-    console.log(url);
     const sourceType = checkSourceType(url);
+    url = forceHttps(url);
     video.volume = 0.3;
     if (sourceType === 'hls' && Hls.isSupported()) {
         const hls = new Hls();
@@ -40,6 +40,12 @@ const checkSourceType = (url) => {
         return 'flv';
     }
     return "unknown";
+}
+
+const forceHttps = (url) => {
+    const httpsUrl = new URL(url);
+    httpsUrl.protocol = 'https';
+    return httpsUrl.toString();
 }
 
 loadVideo(window.location.href.split("#")[1])
